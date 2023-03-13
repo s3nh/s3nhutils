@@ -1,0 +1,53 @@
+from xxx.xxx import app
+from fastapi.testclient import TestClient
+client = TestClient(app)
+
+# def test_read_main():
+#     response = client.get("/health")
+#     assert response.status_code == 200
+
+def post_file(filepath: str, endpoint):
+    example_file = open(filepath, "rb")
+    response = client.post(endpoint, files = dict(file=example_file))
+    return response  
+
+def test_pdf_lt_1mb():
+    example_path: str = ''
+    response = post_file(filepath = example_path, endpoint = "rozliczai/file_predict")
+    assert response.status_code == 200;
+    # assert response.encoding == 'utf-8'
+
+def test_pdf_gt_1mb():
+    example_path: str = ''
+    response = post_file(filepath = example_path, endpoint = "/file_predict") 
+    assert response.status_code == 200
+    # assert response.encoding  == 'utf-8'
+
+def test_tiff_lt_1mb():
+    example_path: str = ''
+    response = post_file(filepath = example_path, endpoint = "file_predict") 
+    assert response.status_code == 200
+    # assert response.encoding == 'utf-8'
+
+
+def test_tiff_gt_1mb():
+    example_path: str = ''
+    response = post_file(filepath = example_path, endpoint = "/file_predict")
+    assert response.status_code == 200
+    # assert response.encoding == 'utf-8'
+
+def test_png_lt_1mb():
+    example_path: str = ''
+    response = post_file(filepath = example_path, endpoint = "file_predict")
+    assert response.status_code == 200
+    # assert response.encoding == 'utf-8'
+
+def test_png_gt_2mb():
+    example_path: str = ''
+    response = post_file(filepath = example_path, endpoint = "/file_predict")
+    assert response.status_code == 200
+    # assert response.encoding == 'utf-8'
+
+# def test_health_check():
+#     response = client.get('/health')
+#     assert response.status_code == 200
